@@ -601,12 +601,27 @@ dependencies = [
  "hex 0.4.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "md5 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "reqwest 0.11.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde 1.0.130 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde_json 1.0.68 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "serde"
 version = "1.0.130"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "serde_derive 1.0.130 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "serde_derive"
+version = "1.0.130"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "proc-macro2 1.0.32 (registry+https://github.com/rust-lang/crates.io-index)",
+ "quote 1.0.10 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.81 (registry+https://github.com/rust-lang/crates.io-index)",
+]
 
 [[package]]
 name = "serde_json"
@@ -973,6 +988,7 @@ dependencies = [
 "checksum security-framework 2.4.2 (registry+https://github.com/rust-lang/crates.io-index)" = "525bc1abfda2e1998d152c45cf13e696f76d0a4972310b22fac1658b05df7c87"
 "checksum security-framework-sys 2.4.2 (registry+https://github.com/rust-lang/crates.io-index)" = "a9dd14d83160b528b7bfd66439110573efcfbe281b17fc2ca9f39f550d619c7e"
 "checksum serde 1.0.130 (registry+https://github.com/rust-lang/crates.io-index)" = "f12d06de37cf59146fbdecab66aa99f9fe4f78722e3607577a5375d66bd0c913"
+"checksum serde_derive 1.0.130 (registry+https://github.com/rust-lang/crates.io-index)" = "d7bc1a1ab1961464eae040d96713baa5a724a8152c1222492465b54322ec508b"
 "checksum serde_json 1.0.68 (registry+https://github.com/rust-lang/crates.io-index)" = "0f690853975602e1bfe1ccbf50504d67174e3bcf340f23b5ea9992e0587a52d8"
 "checksum serde_urlencoded 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)" = "edfa57a7f8d9c1d260a549e7224100f6c43d43f9103e06dd8b4095a9b2b43ce9"
 "checksum slab 0.4.5 (registry+https://github.com/rust-lang/crates.io-index)" = "9def91fd1e018fe007022791f865d0ccc9b3a0d5001e01aabb8b40e46000afb5"

@@ -9,5 +9,9 @@ fn main() {
     }
     let user_id: String = args[1].clone();
     let password: String = args[2].clone();
-    auth::get_token(user_id, password).expect("pien");
+    let result = auth::get_token(user_id, password);
+    match result {
+        Ok(t) => println!("Your token is {}", t),
+        Err(e) => panic!("failed to get token: {}", e)
+    }
 }
