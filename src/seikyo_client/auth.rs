@@ -1,11 +1,13 @@
 use std::collections::HashMap;
 use std::error::Error;
-use std::fmt::{Debug, Display, Formatter};
+use std::fmt::Debug;
 
 use chrono;
 use chrono::TimeZone;
 use reqwest;
 use serde::Deserialize;
+
+use crate::seikyo_client::error::ApiError;
 
 const SIGN_IN_ENDPOINT: &str = "https://mb.seikyou.jp/mobileapp_common/tohoku/getToken2.do";
 
@@ -38,33 +40,14 @@ struct SignInResult {
     klas_error_detail: Option<ErrorDetail>,
 }
 
-#[derive(Debug)]
-struct ApiError {
-    error_msg: Option<String>,
-
-}
-
-impl Display for ApiError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match &self.error_msg {
-            None => write!(f, "Unknown error"),
-            Some(msg) => write!(f, "API Error: {}", msg)
-        }
+fn from_result(result: Option<ErrorDetail>) -> ApiError {
+    match result {
+        None => ApiError { error_msg: None },
+        Some(detail) => ApiError { error_msg: Some(detail.error_message) }
     }
 }
 
-impl Error for ApiError {}
-
-impl ApiError {
-    pub fn from_result(result: Option<ErrorDetail>) -> ApiError {
-        match result {
-            None => ApiError { error_msg: None },
-            Some(detail) => ApiError { error_msg: Some(detail.error_message) }
-        }
-    }
-}
-
-pub fn get_token(id: String, pass: String) -> Result<String, Box<dyn std::error::Error>> {
+pub fn get_token(id: String, pass: String) -> Result<String, Box<dyn Error>> {
     let jst_datetime = chrono::FixedOffset::east(9 * 3600).from_utc_datetime(&chrono::Utc::now().naive_utc());
     let datetime_param = jst_datetime.format("%Y-%m-%d %H:%M:%S").to_string();
     let mut password_hash_original = id.to_owned();
@@ -89,12 +72,12 @@ pub fn get_token(id: String, pass: String) -> Result<String, Box<dyn std::error:
 
     let result: SignInResult = serde_json::from_str(response.as_str())?;
     if result.status != "0" {
-        return Err(Box::new(ApiError::from_result(result.klas_error_detail)));
+        return Err(Box::new(from_result(result.klas_error_detail)));
     }
     match result.data {
-        None => Err(Box::new(ApiError::from_result(result.klas_error_detail))),
+        None => Err(Box::new(from_result(result.klas_error_detail))),
         Some(d) => match d.access_token {
-            None => Err(Box::new(ApiError::from_result(result.klas_error_detail))),
+            None => Err(Box::new(from_result(result.klas_error_detail))),
             Some(token) => Ok(token.token)
         }
     }
