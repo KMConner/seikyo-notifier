@@ -1,4 +1,5 @@
 use std::env;
+use seikyo_notifier::seikyo_client::point;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -7,6 +8,6 @@ fn main() {
         return;
     }
     let token = &args[1];
-    let amount = seikyo_notifier::seikyo_client::point::get_prepaid_amount(token).unwrap();
+    let amount = point::get_prepaid_amount(token).unwrap();
     println!("The amount is {} yen", amount);
 }
